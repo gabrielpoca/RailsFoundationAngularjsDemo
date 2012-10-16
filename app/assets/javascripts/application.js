@@ -16,4 +16,5 @@
 //= require foundation/app
 //= require_tree .
 
-// $(document).foundationTopBar();
+//= require angle-up
+//= require_tree ./angular

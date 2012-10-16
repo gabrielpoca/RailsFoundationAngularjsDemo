@@ -1,6 +1,13 @@
-function PostsCtrl($scope) {
-	$scope.posts = [
-		{"name":"Gabriel Poça", "title":"Primeiro Post", "content":"Conteudo incial para bloggers."},
-		{"name":"Outra Pessoa", "title":"Segundo Post", "content":"Conteudo para trolhas também."}
-	]
+function PostsCtrl($scope, $http) {
+	$http.get('/posts.json').success(function(data) {
+		$scope.posts = data;
+		console.log(data);
+	});
+	$scope.removePost = function(post) {
+		console.log(post);
+		$("#post_"+post).fadeOut();
+		$http.delete('/posts/'+post+'.json').success(function(data) {
+			console.log("Success");
+		})
+	};
 }

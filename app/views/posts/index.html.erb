@@ -6,7 +6,7 @@
 
 <div class="row">
   <div class="twelve columns">
-    <table>
+    <table ng-controller="PostsCtrl">
       <thead>
         <tr>
           <th>Name</th>
@@ -18,16 +18,14 @@
         </tr>
       </thead>
       <tbody>
-        <% @posts.each do |post| %>
-        <tr>
-          <td><%= post.name %></td>
-          <td><%= post.title %></td>
-          <td><%= post.content %></td>
-          <td><%= link_to 'Show', post %></td>
-          <td><%= link_to 'Edit', edit_post_path(post) %></td>
-          <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <tr ng-repeat="post in posts" id="post_{{post.id}}">
+          <td>{{post.title}}</td>
+          <td>{{post.name}}</td>
+          <td>{{post.content}}</td>
+          <td>Show</td>
+          <td>Edit</td>
+          <td><a href="#" ng-click="removePost(post.id)">Destroy</a></td>
         </tr>
-        <% end %>
       </tbody>
     </table>
   </div>
@@ -37,11 +35,4 @@
   <div class=" twelve columns">
     <%= link_to 'New Post', new_post_path %>
   </div>
-</div>
-
-<div ng-controller="PostsCtrl">
-  <ul>
-    <li ng-repeat="post in posts">
-      {{post.title}}, {{post.name}}, {{post.content}}
-    </li>
 </div>

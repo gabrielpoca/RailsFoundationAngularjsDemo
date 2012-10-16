@@ -38,3 +38,10 @@
     <%= link_to 'New Post', new_post_path %>
   </div>
 </div>
+
+<div ng-controller="PostsCtrl">
+  <ul>
+    <li ng-repeat="post in posts">
+      {{post.title}}, {{post.name}}, {{post.content}}
+    </li>
+</div>

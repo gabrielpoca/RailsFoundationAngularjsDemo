@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require foundation
 //= require foundation/app
-//= require_tree .
-
-//= require angle-up
+//= require angular
 //= require_tree ./angular
+//= require_self

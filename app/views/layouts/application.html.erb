@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Blog</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
+	<title>Blog</title>
+	<%= stylesheet_link_tag    "application", :media => "all" %>
+	<%= javascript_include_tag "application" %>
+	<%= csrf_meta_tags %>
 </head>
 <body>
+	<div class="contain-to-grid">
+		<nav class="top-bar">
+			<ul>
+				<li class="name"><h1><a href="#">Tutorial Blog</a></h1></li>
+				<li class="toggle-topbar"><a href="#"></a></li>
+				<li class="divider"></li>
+			</ul>
+			<section>
+				<ul class="left">
+					<li>
+						<%= link_to 'Home', home_index_path %>
+					</li>
+					<li>
+						<%= link_to 'Blog', posts_path %>
+					</li>
+				</ul>
 
-<%= yield %>
+				<ul class="right">
+				</ul>
+			</section>
+		</nav>
+	</div>
+	<%= yield %>
 
 </body>
 </html>

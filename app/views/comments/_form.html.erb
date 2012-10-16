@@ -1,13 +1,17 @@
 <%= form_for([@post, @post.comments.build]) do |f| %>
-  <div class="field">
-    <%= f.label :commenter %><br />
-    <%= f.text_field :commenter %>
+  <div class="row">
+    <div class="twelve columns">
+    <%= f.text_field :commenter, "placeholder" => "Name" %>
   </div>
-  <div class="field">
-    <%= f.label :body %><br />
-    <%= f.text_area :body %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="row">
+    <div class="twelve columns">
+    <%= f.text_area :body, "placeholder" => "Comment" %>
+  </div>
+  </div>
+  <div class="row">
+      <div class="twelve columns">
+        <%= f.submit 'Submit', :class => "button" %>
+      </div>
   </div>
 <% end %>

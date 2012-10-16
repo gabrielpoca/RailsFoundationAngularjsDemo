@@ -1,15 +1,19 @@
-<p>
-  <b>Commenter:</b>
-  <%= comment.commenter %>
-</p>
+<div class="row">
+	<div class="twelve columns">
+		<%= comment.commenter %>
+	</div>
+</div>
 
-<p>
-  <b>Comment:</b>
-  <%= comment.body %>
-</p>
+<div class="row">
+	<div class="twelve columns">
+		<%= comment.body %>
+	</div>
+</div>
 
-<p>
-  <%= link_to 'Destroy Comment', [comment.post, comment],
-               :confirm => 'Are you sure?',
-               :method => :delete %>
-</p>
+<div class="row">
+	<div class="twelve columns">
+		<%= link_to 'Destroy Comment', [comment.post, comment],
+		:confirm => 'Are you sure?',
+		:method => :delete %>
+	</div>
+</div>

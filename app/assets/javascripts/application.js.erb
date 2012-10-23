@@ -6,6 +6,8 @@
 //= require_self
 //= require_tree ./angular
 
+$(document).foundationAlerts();
+
 var myModule = angular.module('blog', []);
 
 myModule.config(['$routeProvider', function($routeProvider) {
@@ -14,21 +16,21 @@ myModule.config(['$routeProvider', function($routeProvider) {
 	otherwise({redirectTo: '/posts'});
 }]);
 
-myModule.factory('mySharedService', function($rootScope) {
-	var sharedService = {};
+myModule.factory('noticeService', function($rootScope) {
+	var noticeService = {};
 
-	sharedService.message = '';
+	noticeService.messages = [];
 
-	sharedService.prepForBroadcast = function(msg) {
-		this.message = msg;
+	noticeService.prepForBroadcast = function(msg) {
+		this.messages.push(msg);
 		this.broadcastItem();
 	};
 
-	sharedService.broadcastItem = function() {
+	noticeService.broadcastItem = function() {
 		$rootScope.$broadcast('handleBroadcast');
 	};
 
-	return sharedService;
+	return noticeService;
 });
 
 
@@ -44,29 +46,30 @@ function PostsCtrl($scope, $http) {
 	};
 }
 
-function NewPostsCtrl($scope, $http, $location, sharedService) {
+function NewPostsCtrl($scope, $http, $location, noticeService) {
 	$scope.submit = function() {
 		$http.post('/posts.json', {name: $scope.name, title: $scope.title, content: $scope.content}).
 		success(function(data) {
 			console.log(data);
-			sharedService.prepForBroadcast("SUCCESS");
+			noticeService.prepForBroadcast("SUCCESS");
 			$location.path('/posts');
 		}).
 		error(function(data) {
-			sharedService.prepForBroadcast("NOT");
+			for( var i = 0; i < data.title.length; i++) {
+				noticeService.prepForBroadcast(data.title[i]);
+			}
 			console.log(data);
-			$location.path('/posts');
 		});
 	}
 }
 
-function NoticeCtrl($scope, sharedService) {
-	$scope.notice = 'First notice';
+function NoticeCtrl($scope, noticeService) {
+	$scope.notices = [];
 	$scope.$on('handleBroadcast', function() {
-		$scope.notice = sharedService.message;
+		$scope.notices = noticeService.messages;
 	});
 }
 
 
-NewPostsCtrl.$inject = ['$scope', '$http', '$location', 'mySharedService'];
-NoticeCtrl.$inject = ['$scope', 'mySharedService'];
+NewPostsCtrl.$inject = ['$scope', '$http', '$location', 'noticeService'];
+NoticeCtrl.$inject = ['$scope', 'noticeService'];

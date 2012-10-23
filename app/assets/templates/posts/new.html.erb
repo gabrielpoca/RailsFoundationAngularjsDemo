@@ -1,0 +1,26 @@
+<div class="row">
+	<div class="twelve columns">
+		<h1>New post</h1>
+	</div>
+</div>
+
+<form method="POST">
+	<div class="row">
+		<div class="six columns">
+			<input name="post[name]" placeholder="Name" size="30" type="text" ng-model="name">
+		</div>
+		<div class="six columns">
+			<input name="post[title]" placeholder="Title" size="30" type="text" ng-model="title">
+		</div>
+	</div>
+	<div class="row">
+		<div class="twelve columns">
+			<textarea name="post[content]" placeholder="Content goes here..." rows="10" cols="40" ng-model="content"></textarea>
+		</div>
+	</div>
+	<div class="row">
+		<div class="twelve columns">
+			<input class="button" name="commit" type="submit" value="Submit" ng-click="submit()">
+		</div>
+	</div>
+</form>

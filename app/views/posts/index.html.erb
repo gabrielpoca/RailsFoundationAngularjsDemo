@@ -1,38 +1,11 @@
 <div class="row">
-  <div class="twelve columns">
-    <h1>Listing posts</h1>
+  <div class="two columns">
+  	<ul class="side-nav">
+  		<li><%= link_to 'Home', "#/posts" %></li>
+    	<li><%= link_to 'New Post', "#/posts/new" %></li>
+    </ul>
   </div>
-</div>
-
-<div class="row">
-  <div class="twelve columns">
-    <table ng-controller="PostsCtrl">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Title</th>
-          <th>Context</th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="post in posts" id="post_{{post.id}}">
-          <td>{{post.title}}</td>
-          <td>{{post.name}}</td>
-          <td>{{post.content}}</td>
-          <td>Show</td>
-          <td>Edit</td>
-          <td><a href="#" ng-click="removePost(post.id)">Destroy</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="row">
-  <div class=" twelve columns">
-    <%= link_to 'New Post', new_post_path %>
+  <div class="ten columns">
+  	<div ng-view></div>
   </div>
 </div>

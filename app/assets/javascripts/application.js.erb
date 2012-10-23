@@ -1,0 +1,72 @@
+//= require jquery
+//= require jquery_ujs
+//= require foundation
+//= require foundation/app
+//= require angular
+//= require_self
+//= require_tree ./angular
+
+var myModule = angular.module('blog', []);
+
+myModule.config(['$routeProvider', function($routeProvider) {
+	$routeProvider.when('/posts', {templateUrl: "<%= asset_path('posts/index.html') %>", controller: PostsCtrl}).
+	when('/posts/new', {templateUrl: "<%= asset_path('posts/new.html') %>", controller: NewPostsCtrl}).
+	otherwise({redirectTo: '/posts'});
+}]);
+
+myModule.factory('mySharedService', function($rootScope) {
+	var sharedService = {};
+
+	sharedService.message = '';
+
+	sharedService.prepForBroadcast = function(msg) {
+		this.message = msg;
+		this.broadcastItem();
+	};
+
+	sharedService.broadcastItem = function() {
+		$rootScope.$broadcast('handleBroadcast');
+	};
+
+	return sharedService;
+});
+
+
+function PostsCtrl($scope, $http) {
+	$http.get('/posts.json').success(function(data) {
+		$scope.posts = data;
+	});
+	$scope.removePost = function(post) {
+		$("#post_"+post).fadeOut();
+		$http.delete('/posts/'+post+'.json').success(function(data) {
+			console.log("Success");
+		})
+	};
+}
+
+function NewPostsCtrl($scope, $http, $location, sharedService) {
+	$scope.submit = function() {
+		$http.post('/posts.json', {name: $scope.name, title: $scope.title, content: $scope.content}).
+		success(function(data) {
+			console.log(data);
+			sharedService.prepForBroadcast("SUCCESS");
+			$location.path('/posts');
+		}).
+		error(function(data) {
+			sharedService.prepForBroadcast("NOT");
+			console.log(data);
+			$location.path('/posts');
+		});
+	}
+}
+
+function NoticeCtrl($scope, sharedService) {
+	$scope.notice = 'First notice';
+	$scope.$on('handleBroadcast', function() {
+		$scope.notice = sharedService.message;
+	});
+}
+
+
+NewPostsCtrl.$inject = ['$scope', '$http', '$location', 'mySharedService'];
+NoticeCtrl.$inject = ['$scope', 'mySharedService'];

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="blog">
 <head>
 	<title>Blog</title>
 	<%= stylesheet_link_tag    "application", :media => "all" %>
@@ -28,6 +28,9 @@
 			</section>
 		</nav>
 	</div>
+
+	<div ng-controller='NoticeCtrl'><textarea>{{ notice }}</textarea></div>
+
 	<%= yield %>
 
 </body>

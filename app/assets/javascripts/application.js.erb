@@ -13,6 +13,7 @@ var myModule = angular.module('blog', []);
 myModule.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/posts', {templateUrl: "<%= asset_path('posts/index.html') %>", controller: PostsCtrl}).
 	when('/posts/new', {templateUrl: "<%= asset_path('posts/new.html') %>", controller: NewPostsCtrl}).
+	when('/posts/:id', {templateUrl: "<%= asset_path('posts/show.html') %>", controller: ShowPostCtrl}).
 	otherwise({redirectTo: '/posts'});
 }]);
 
@@ -34,23 +35,30 @@ myModule.factory('noticeService', function($rootScope) {
 });
 
 
-function PostsCtrl($scope, $http) {
+function PostsCtrl($scope, $http, noticeService) {
 	$http.get('/posts.json').success(function(data) {
 		$scope.posts = data;
 	});
 	$scope.removePost = function(post) {
-		$("#post_"+post).fadeOut();
 		$http.delete('/posts/'+post+'.json').success(function(data) {
-			console.log("Success");
+			$("#post_"+post).fadeOut();
+			noticeService.prepForBroadcast("Post successfully removed!")
 		})
 	};
+}
+
+function ShowPostCtrl ($scope, $routeParams, $http) {
+	console.log($routeParams);
+	$http.get('/posts/'+$routeParams.id+'.json').success(function(data) {
+		$scope.post = data;
+		console.log(data);
+	});
 }
 
 function NewPostsCtrl($scope, $http, $location, noticeService) {
 	$scope.submit = function() {
 		$http.post('/posts.json', {name: $scope.name, title: $scope.title, content: $scope.content}).
 		success(function(data) {
-			console.log(data);
 			noticeService.prepForBroadcast("SUCCESS");
 			$location.path('/posts');
 		}).
@@ -72,4 +80,5 @@ function NoticeCtrl($scope, noticeService) {
 
 
 NewPostsCtrl.$inject = ['$scope', '$http', '$location', 'noticeService'];
+PostsCtrl.$inject = ['$scope', '$http', 'noticeService'];
 NoticeCtrl.$inject = ['$scope', 'noticeService'];

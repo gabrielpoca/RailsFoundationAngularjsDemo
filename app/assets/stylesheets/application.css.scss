@@ -8,8 +8,8 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
  *= require foundation_and_overrides
+ *= require_self
  *= require_tree .
  */
 
@@ -17,6 +17,11 @@
 @import "compass/reset";
 @import "foundation";
 
+$even-row-color: #F9F9F9;
+
 table {
 	width: 100%;
+	tbody tr:nth-child(even) {
+		background: white;
+	}
 }

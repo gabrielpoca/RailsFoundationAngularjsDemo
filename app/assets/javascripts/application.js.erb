@@ -3,6 +3,7 @@
 //= require foundation
 //= require foundation/app
 //= require angular
+//= require gritter
 //= require_self
 //= require_tree ./angular
 
@@ -41,7 +42,12 @@ function PostsCtrl($scope, $http, noticeService) {
 	$scope.removePost = function(post) {
 		$http.delete('/posts/'+post+'.json').success(function(data) {
 			$("#post_"+post).fadeOut();
-			noticeService.prepForBroadcast("Post successfully removed!")
+			// noticeService.prepForBroadcast("Post successfully removed!")
+			$.gritter.add({
+				title: 'Post successfully removed!',
+				text: 'Post successfully removed!',
+				sticky: false
+			})
 		})
 	};
 }

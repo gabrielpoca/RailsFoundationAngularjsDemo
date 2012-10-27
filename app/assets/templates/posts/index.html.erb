@@ -19,8 +19,8 @@
       <tbody>
         <tr ng-repeat="post in posts" id="post_{{post.id}}">
           <td>{{post.title}}</td>
-          <td><a href="#/posts/{{ post.id }}">{{post.name}}</a></td>
-          <td>Show</td>
+          <td>{{post.name}}</td>
+          <td><a href="#/posts/{{ post.id }}">Show</a></td>
           <td>Edit</td>
           <td><button class="button small" ng-click="removePost(post.id)">Destroy</a></td>
         </tr>

@@ -34,7 +34,6 @@ myModule.factory('noticeService', function($rootScope) {
 	return noticeService;
 });
 
-
 function PostsCtrl($scope, $http, noticeService) {
 	$http.get('/posts.json').success(function(data) {
 		$scope.posts = data;
@@ -48,11 +47,19 @@ function PostsCtrl($scope, $http, noticeService) {
 }
 
 function ShowPostCtrl ($scope, $routeParams, $http) {
-	console.log($routeParams);
 	$http.get('/posts/'+$routeParams.id+'.json').success(function(data) {
 		$scope.post = data;
-		console.log(data);
+		$http.get('/posts/'+$routeParams.id+'/comments.json').success(function(data) {
+			$scope.comments = data;
+		})
 	});
+	$scope.comment = function() {
+		console.log($scope.body+" "+$scope.commenter);
+		$http.post('/posts/'+$routeParams.id+'/comments.json', {body: $scope.body, commenter: $scope.commenter}).
+		success(function(data) {
+			$scope.comments.push(data);
+		});
+	}
 }
 
 function NewPostsCtrl($scope, $http, $location, noticeService) {
@@ -66,7 +73,6 @@ function NewPostsCtrl($scope, $http, $location, noticeService) {
 			for( var i = 0; i < data.title.length; i++) {
 				noticeService.prepForBroadcast(data.title[i]);
 			}
-			console.log(data);
 		});
 	}
 }

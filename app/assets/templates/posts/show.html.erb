@@ -24,6 +24,20 @@
 	</div>
 </div>
 
+<div ng-repeat="comment in comments">
+	<div class="row">
+		<div class="twelve columns">
+			by {{ comment.commenter }}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="twelve columns">
+			{{ comment.body }}
+		</div>
+	</div>
+</div>
+
 
 <div class="row">
 	<div class="twelve columns">
@@ -32,9 +46,22 @@
 </div>
 
 
-<div class="row">
-	<div class="twelve columns">
-
-
+<form method="POST">
+	<div class="row">
+		<div class="twelve columns">
+			<textarea placeholder="Comment..." name="comment[body]" rows="4" cols="40" ng-model="body"></textarea>
+		</div>
 	</div>
-</div>
+	<div class="row">
+		<div class="twelve columns">
+			<input type="text" name="comment[name]" placeholder="Name..." ng-model="commenter" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="twelve columns">
+			<input class="button small" name="submit" type="submit" value="Comment" ng-click="comment()">
+			<a href="#/posts">Back</a>
+		</div>
+	</div>
+</form>
+

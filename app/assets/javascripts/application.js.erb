@@ -15,6 +15,8 @@ myModule.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/posts', {templateUrl: "<%= asset_path('posts/index.html') %>", controller: PostsCtrl}).
 	when('/posts/new', {templateUrl: "<%= asset_path('posts/new.html') %>", controller: NewPostsCtrl}).
 	when('/posts/:id', {templateUrl: "<%= asset_path('posts/show.html') %>", controller: ShowPostCtrl}).
+	when('/posts/edit/:id', {templateUrl: "<%= asset_path('posts/edit.html') %>", controller: EditPostCtrl}).
+	when('/pages/about', {templateUrl: "<%= asset_path('pages/about.html') %>"}).
 	otherwise({redirectTo: '/posts'});
 }]);
 
@@ -27,6 +29,16 @@ myModule.factory('noticeService', function($rootScope) {
 		this.messages.push(msg);
 		this.broadcastItem();
 	};
+
+	// noticeService.sendSuccessMessage = function(msg) {
+	// 	this.messages.push(
+	// 		{
+	// 			type: "success",
+	// 			message: msg
+	// 		}
+	// 	);
+	// 	this.broadcastItem();
+	// }
 
 	noticeService.broadcastItem = function() {
 		$rootScope.$broadcast('handleBroadcast');
@@ -42,12 +54,7 @@ function PostsCtrl($scope, $http, noticeService) {
 	$scope.removePost = function(post) {
 		$http.delete('/posts/'+post+'.json').success(function(data) {
 			$("#post_"+post).fadeOut();
-			// noticeService.prepForBroadcast("Post successfully removed!")
-			$.gritter.add({
-				title: 'Post successfully removed!',
-				text: 'Post successfully removed!',
-				sticky: false
-			})
+			noticeService.prepForBroadcast("Post successfully removed!")
 		})
 	};
 }
@@ -68,11 +75,25 @@ function ShowPostCtrl ($scope, $routeParams, $http) {
 	}
 }
 
+function EditPostCtrl ($scope, $routeParams, $http, $location, noticeService) {
+	$http.get('/posts/'+$routeParams.id+'.json').success(function(data) {
+		$scope.title = data.title;
+		$scope.name = data.name;
+		$scope.content = data.content;
+	});
+	$scope.updatePost = function() {
+		$http.put('/posts/'+$routeParams.id+'.json', {name: $scope.name, title: $scope.title, content: $scope.content}).success(function(data) {
+			noticeService.prepForBroadcast("Post successfully edit!")
+			$location.path('/posts');
+		});
+	};
+}
+
 function NewPostsCtrl($scope, $http, $location, noticeService) {
 	$scope.submit = function() {
 		$http.post('/posts.json', {name: $scope.name, title: $scope.title, content: $scope.content}).
 		success(function(data) {
-			noticeService.prepForBroadcast("SUCCESS");
+			noticeService.prepForBroadcast("Successfully created post!");
 			$location.path('/posts');
 		}).
 		error(function(data) {
@@ -91,6 +112,8 @@ function NoticeCtrl($scope, noticeService) {
 }
 
 
+EditPostCtrl.$inject = ['$scope', '$routeParams', '$http', '$location', 'noticeService'];
 NewPostsCtrl.$inject = ['$scope', '$http', '$location', 'noticeService'];
 PostsCtrl.$inject = ['$scope', '$http', 'noticeService'];
 NoticeCtrl.$inject = ['$scope', 'noticeService'];
+

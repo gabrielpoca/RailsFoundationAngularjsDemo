@@ -3,6 +3,6 @@ Blog::Application.routes.draw do
     resources :comments
   end
 
-  get "home/index"
-  root :to => "home#index"
+  get "blog/index"
+  root :to => "blog#index"
 end

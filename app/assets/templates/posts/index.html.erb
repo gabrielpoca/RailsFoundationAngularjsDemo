@@ -21,8 +21,8 @@
           <td>{{post.title}}</td>
           <td>{{post.name}}</td>
           <td><a href="#/posts/{{ post.id }}">Show</a></td>
-          <td>Edit</td>
-          <td><button class="button small" ng-click="removePost(post.id)">Destroy</a></td>
+          <td><a href="#/posts/edit/{{ post.id }}">Edit</td>
+          <td><a href=" " ng-click="removePost(post.id)">Destroy</a></td>
         </tr>
       </tbody>
     </table>
